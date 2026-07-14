@@ -24,6 +24,9 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Remove daemon JVM pin (CI has no JetBrains JBR)
+        run: rm -f gradle/gradle-daemon-jvm.properties
+
       - name: Build OSS debug APK
         run: ./gradlew :app:assembleOssDebug -POAUTH_CLIENT_ID=${{ secrets.OAUTH_CLIENT_ID }}
 
