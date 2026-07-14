@@ -2,8 +2,13 @@ name: Sync upstream and release
 
 on:
   schedule:
-    - cron: "0 */6 * * *"   # 每 6 小时检查一次作者有没有更新
+    - cron: "0 */6 * * *"
   workflow_dispatch:
+    inputs:
+      force_build:
+        description: "强制编译一次（忽略是否有新提交）"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -38,7 +43,7 @@ jobs:
 
   build:
     needs: sync
-    if: needs.sync.outputs.has_changes == 'true'
+    if: needs.sync.outputs.has_changes == 'true' || inputs.force_build == true
     runs-on: ubuntu-latest
     defaults:
       run:
