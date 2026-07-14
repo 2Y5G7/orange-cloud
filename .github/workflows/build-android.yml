@@ -1,9 +1,14 @@
+name: Build Android (OSS debug)
+
+on:
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: apps/android   # ← 改这里
+        working-directory: apps/android
     steps:
       - uses: actions/checkout@v4
 
@@ -11,7 +16,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: 17
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
@@ -26,4 +31,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: orange-cloud-oss-debug
-          path: apps/android/app/build/outputs/apk/oss/debug/*.apk   # ← 这里也改
+          path: apps/android/app/build/outputs/apk/oss/debug/*.apk
