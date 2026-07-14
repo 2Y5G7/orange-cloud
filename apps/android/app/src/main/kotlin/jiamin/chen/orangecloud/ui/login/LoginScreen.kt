@@ -153,7 +153,7 @@ private fun BrandView(error: String?, onSignIn: () -> Unit, onOpenToolbox: () ->
                 }
                 if (error != null) {
                     Spacer(Modifier.height(14.dp))
-                    Text(stringResource(R.string.login_failed), color = cs.error, fontSize = 14.sp)
+                    Text("${stringResource(R.string.login_failed)}: $error", color = cs.error, fontSize = 14.sp)
                 }
             }
         }
