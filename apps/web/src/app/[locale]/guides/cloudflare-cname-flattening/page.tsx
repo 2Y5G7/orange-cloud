@@ -54,7 +54,7 @@ const FAQ: Array<{ q: string; a: string }> = [
 const RELATED: RelatedLink[] = [
 	{
 		href: "/guides/what-is-the-orange-cloud-in-cloudflare",
-		label: "What does the orange cloud mean in Cloudflare?",
+		label: "Orange cloud vs grey cloud: proxied vs DNS only",
 		note: "Every proxied record is flattened by definition — this is what the proxy returns instead of your origin.",
 	},
 	{

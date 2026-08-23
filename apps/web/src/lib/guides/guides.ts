@@ -37,14 +37,14 @@ export type GuideMeta = {
 export const GUIDES: GuideMeta[] = [
 	{
 		slug: "what-is-the-orange-cloud-in-cloudflare",
-		h1: "What Does the Orange Cloud Mean in Cloudflare?",
-		title: "Cloudflare Orange Cloud: Proxied vs DNS Only, Explained",
+		h1: "What Is the Orange Cloud in Cloudflare?",
+		title: "What Is the Orange Cloud? Proxied vs DNS Only in Cloudflare",
 		description:
-			"The orange cloud means a DNS record is proxied through Cloudflare. The gray cloud means DNS only. What changes, which records qualify, when to use each.",
+			"The orange cloud means a DNS record is proxied through Cloudflare; the grey cloud means DNS only. What changes, which records qualify, when to use each.",
 		blurb:
-			"Proxied vs DNS only: what the toggle actually changes, which record types and ports it covers, and how to read the errors it causes.",
-		updated: "2026-08-19",
-		readingTime: "8 min read",
+			"Orange cloud vs grey cloud, proxied vs DNS only: what the toggle actually changes, which record types and ports it covers, and the errors it causes.",
+		updated: "2026-08-23",
+		readingTime: "9 min read",
 	},
 	{
 		slug: "cloudflare-orange-to-orange",
