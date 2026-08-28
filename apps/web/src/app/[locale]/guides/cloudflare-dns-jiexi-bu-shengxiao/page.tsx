@@ -52,6 +52,11 @@ const FAQ: Array<{ q: string; a: string }> = [
 
 const RELATED: RelatedLink[] = [
 	{
+		href: "/guides/goumai-yuming-jieru-cloudflare",
+		label: "怎么买一个域名，再把它接到 Cloudflare 上？",
+		note: "如果域名压根还没买、或者 NS 从没改过，先看这篇——那不是「不生效」，是还没开始。",
+	},
+	{
 		href: "/guides/cloudflare-xiaohuangyun",
 		label: "Cloudflare 的小黄云到底是什么？什么时候该关掉？",
 		note: "代理开着的时候 DNS 应答返回的是任播 IP——这正是改了源站 IP 却在 dig 里看不出变化的原因。",
