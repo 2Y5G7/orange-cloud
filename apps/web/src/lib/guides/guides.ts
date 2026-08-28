@@ -149,6 +149,17 @@ export const GUIDES: GuideMeta[] = [
 
 export const GUIDES_ZH: GuideMeta[] = [
 	{
+		slug: "goumai-yuming-jieru-cloudflare",
+		h1: "怎么买一个域名，再把它接到 Cloudflare 上？",
+		title: "新手怎么买域名并接入 Cloudflare",
+		description:
+			"域名要先在注册商那里花钱买下来才归你。在面板里添加一个域名只是建了一份配置，不会让它变成你的。两条路线：直接在 Cloudflare 买，或在腾讯云买完再改 NS。",
+		blurb:
+			"从零讲清域名、解析、服务器是三件事而不是一件。Cloudflare Registrar 与腾讯云两条购买路线的完整步骤、实名认证与备案各自卡在哪、买完接入的三步，以及新手最容易踩的六个坑。",
+		updated: "2026-08-28",
+		readingTime: "约 11 分钟",
+	},
+	{
 		slug: "cloudflare-dns-jiexi-bu-shengxiao",
 		h1: "改了 DNS 解析，为什么一直不生效？",
 		title: "Cloudflare 改了 DNS 为什么不生效",
