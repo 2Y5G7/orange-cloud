@@ -37,14 +37,14 @@ export type GuideMeta = {
 export const GUIDES: GuideMeta[] = [
 	{
 		slug: "what-is-the-orange-cloud-in-cloudflare",
-		h1: "What Is the Orange Cloud in Cloudflare?",
-		title: "What Is the Orange Cloud? Proxied vs DNS Only in Cloudflare",
+		h1: "What Does the Orange Cloud Mean in Cloudflare?",
+		title: "Proxied vs DNS Only: Cloudflare Orange vs Grey Cloud",
 		description:
-			"The orange cloud means a DNS record is proxied through Cloudflare; the grey cloud means DNS only. What changes, which records qualify, when to use each.",
+			"Proxied (orange cloud) routes HTTP traffic through Cloudflare; DNS only (grey cloud) sends visitors straight to your origin. What each changes, and when.",
 		blurb:
-			"Orange cloud vs grey cloud, proxied vs DNS only: what the toggle actually changes, which record types and ports it covers, and the errors it causes.",
-		updated: "2026-08-23",
-		readingTime: "9 min read",
+			"Proxied vs DNS only, in plain terms: what the orange and grey cloud each change, which record types and ports qualify, and how to read the errors the toggle causes.",
+		updated: "2026-08-24",
+		readingTime: "8 min read",
 	},
 	{
 		slug: "cloudflare-orange-to-orange",
@@ -112,9 +112,119 @@ export const GUIDES: GuideMeta[] = [
 		updated: "2026-08-23",
 		readingTime: "8 min read",
 	},
+	{
+		slug: "cloudflare-error-1000-dns-points-to-prohibited-ip",
+		h1: "Why Am I Seeing Cloudflare Error 1000: DNS Points to Prohibited IP?",
+		title: "Cloudflare Error 1000: DNS Points to Prohibited IP",
+		description:
+			"Error 1000 means the origin address Cloudflare resolved for your hostname is Cloudflare itself. The five things that cause that loop, and who fixes each.",
+		blurb:
+			"The proxy refuses to forward a request to itself. Which records, reverse proxies, and request headers trigger it \u2014 and how 1000 differs from 1002, 1003, and 1014.",
+		updated: "2026-08-26",
+		readingTime: "8 min read",
+	},
+	{
+		slug: "cloudflare-error-522-connection-timed-out",
+		h1: "Why Am I Getting Cloudflare Error 522: Connection Timed Out?",
+		title: "Cloudflare Error 522: Connection Timed Out, Explained",
+		description:
+			"Error 522 means Cloudflare could not open a TCP connection to your origin within 19 seconds. The usual cause is a firewall dropping Cloudflare's IPs.",
+		blurb:
+			"Two deadlines produce the same error code, and a 522 is silence rather than refusal \u2014 which is what separates it from 521, 523 and 524.",
+		updated: "2026-08-27",
+		readingTime: "8 min read",
+	},
+	{
+		slug: "cloudflare-real-visitor-ip-cf-connecting-ip",
+		h1: "How Do You Get the Real Visitor IP Behind Cloudflare?",
+		title: "Cloudflare Real Visitor IP: CF-Connecting-IP Explained",
+		description:
+			"The visitor's real address arrives in the CF-Connecting-IP header. Read that instead of the connection source, and trust it only from Cloudflare's IPs.",
+		blurb:
+			"Your logs fill up with Cloudflare addresses because Cloudflare is the client now. Which header carries the real one, why X-Forwarded-For is the wrong one to read, and the trust boundary every guide leaves out.",
+		updated: "2026-08-28",
+		readingTime: "8 min read",
+	},
 ];
 
 export const GUIDES_ZH: GuideMeta[] = [
+	{
+		slug: "goumai-yuming-jieru-cloudflare",
+		h1: "怎么买一个域名，再把它接到 Cloudflare 上？",
+		title: "新手怎么买域名并接入 Cloudflare",
+		description:
+			"域名要先在注册商那里花钱买下来才归你。在面板里添加一个域名只是建了一份配置，不会让它变成你的。两条路线：直接在 Cloudflare 买，或在腾讯云买完再改 NS。",
+		blurb:
+			"从零讲清域名、解析、服务器是三件事而不是一件。Cloudflare Registrar 与腾讯云两条购买路线的完整步骤、实名认证与备案各自卡在哪、买完接入的三步，以及新手最容易踩的六个坑。",
+		updated: "2026-08-28",
+		readingTime: "约 11 分钟",
+	},
+	{
+		slug: "cloudflare-dns-jiexi-bu-shengxiao",
+		h1: "改了 DNS 解析，为什么一直不生效？",
+		title: "Cloudflare 改了 DNS 为什么不生效",
+		description:
+			"先分清是哪一种「不生效」：域名的 NS 还没指到 Cloudflare，你改的记录压根不参与解析；已经指过来了，剩下的就只是 TTL 和沿途缓存在拖时间。",
+		blurb:
+			"改动没进解析链路，和进了但被缓存挡着，是两件完全不同的事。三种域名状态各自会返回什么、卡在 Pending 的四个原因、开着小黄云时 dig 为什么看不出变化，以及国内解析器那一层该怎么验。",
+		updated: "2026-08-28",
+		readingTime: "约 10 分钟",
+	},
+	{
+		slug: "cloudflare-huancun-mingzhonglv",
+		h1: "Cloudflare 到底缓存了什么？为什么命中率一直上不去",
+		title: "Cloudflare 缓存了什么：命中率为什么上不去",
+		description:
+			"Cloudflare 默认只按文件扩展名缓存静态资源，HTML 和 JSON 一概不缓存。命中率上不去，先看 cf-cache-status：DYNAMIC 是请求时就没资格，BYPASS 是响应本身不让存。",
+		blurb:
+			"国内 CDN 那套「买了就是全站加速」的心智，在 Cloudflare 这里不成立。默认缓存哪些扩展名、DYNAMIC 与 BYPASS 差在哪、反复未命中该查什么，以及国内访客散落境外节点为什么让回源次数天然更多。",
+		updated: "2026-08-27",
+		readingTime: "约 11 分钟",
+	},
+	{
+		slug: "cloudflare-cname-zhanping",
+		h1: "Cloudflare 的 CNAME 展平（拉平）到底做了什么？",
+		title: "Cloudflare CNAME 展平是什么，能关掉吗",
+		description:
+			"展平就是 Cloudflare 替你把 CNAME 解析成 IP，返回 A 记录而不是 CNAME。根域名上的 CNAME 所有方案强制展平、关不掉，付费方案那两个开关只管子域名。",
+		blurb:
+			"顶点上填的是 CNAME，对外返回的却是 A 记录。展平的触发条件、两种代理状态下截然不同的 TTL 规则、四种会被咬到的场景，以及它为什么会让国内 CDN 的调度整个失效。",
+		updated: "2026-08-26",
+		readingTime: "约 10 分钟",
+	},
+	{
+		slug: "cloudflare-mianfeiban-shipin-tucang",
+		h1: "Cloudflare 免费版能拿来放视频、当图床吗？",
+		title: "Cloudflare 免费版能放视频、当图床吗",
+		description:
+			"图片一般没问题，视频不行。免费、Pro、Business 方案的 CDN 不得用来分发视频，或让大文件占到失衡的比例，官方给的正路是 Images、Stream 与 R2。",
+		blurb:
+			"默认缓存的扩展名表里就有 MP4，所以它当然跑得起来——但跑得起来不等于被允许。条款那一节到底写了什么、100 MB 与 512 MB 两道硬上限卡在哪，以及大文件真正该去的地方。",
+		updated: "2026-08-25",
+		readingTime: "约 9 分钟",
+	},
+	{
+		slug: "cloudflare-ssl-jiami-moshi",
+		h1: "Cloudflare 的 SSL/TLS 加密模式该选哪一个？",
+		title: "Cloudflare 加密模式：灵活、完全、严格怎么选",
+		description:
+			"加密模式管的只是 Cloudflare 到源站这一段：源站有公开受信任的证书就选完全（严格），只有自签证书选完全，两样都没有才退到灵活。",
+		blurb:
+			"四档模式的真实差别只在验不验证源站证书。灵活为什么会让回源那一段裸奔、525 与 526 各自卡在哪一步，以及源站只有自签证书时不必退回灵活的那条路。",
+		updated: "2026-08-24",
+		readingTime: "约 9 分钟",
+	},
+	{
+		slug: "cloudflare-xiaohuangyun",
+		h1: "Cloudflare 的小黄云到底是什么？什么时候该关掉？",
+		title: "Cloudflare 小黄云是什么：开还是关",
+		description:
+			"小黄云是 DNS 记录上的代理开关。开着，域名解析到 Cloudflare 的任播 IP，流量先过 Cloudflare 再回源站；关掉（灰云）就直接解析到源站真实 IP。",
+		blurb:
+			"橙云、橙色云朵、代理开关说的都是它。能开的只有 A / AAAA / CNAME 三种记录，端口也只覆盖固定那几个——先看清边界，再决定每条记录的开关。",
+		updated: "2026-08-24",
+		readingTime: "约 9 分钟",
+	},
 	{
 		slug: "cloudflare-huoqu-zhenshi-ip",
 		h1: "开了 Cloudflare 之后，怎么在源站拿到访客真实 IP？",
