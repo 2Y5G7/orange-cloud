@@ -145,6 +145,17 @@ export const GUIDES: GuideMeta[] = [
 		updated: "2026-08-28",
 		readingTime: "8 min read",
 	},
+	{
+		slug: "cloudflare-error-521-web-server-is-down",
+		h1: "Why Am I Getting Cloudflare Error 521: Web Server Is Down?",
+		title: "Cloudflare Error 521: Web Server Is Down, Explained",
+		description:
+			"Error 521 means your origin refused Cloudflare's connection. Either the web server is not running, or it is not listening on the port your SSL mode needs.",
+		blurb:
+			"A refusal, not a timeout — which is why it appears instantly. The four causes, and the one that starts the moment you change an encryption mode.",
+		updated: "2026-09-01",
+		readingTime: "7 min read",
+	},
 ];
 
 export const GUIDES_ZH: GuideMeta[] = [
