@@ -3,10 +3,6 @@ name: Build Android (OSS debug)
 on:
   workflow_dispatch:
 
-concurrency:
-  group: build-android-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,29 +10,22 @@ jobs:
       run:
         working-directory: apps/android
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v4
 
-      # 项目 gradle-daemon-jvm.properties 固定要求 vendor=JetBrains 的 JDK 21，
-      # 而 actions/setup-java 无法安装 JetBrains 发行版，装 temurin 21 会导致
-      # Gradle 严格校验 vendor 不匹配，转而尝试联网下载 JBR 工具链但失败退出。
-      # 版本号（21）是对的，卡的是发行商，所以仍需删除这个 pin 文件绕开校验。
-      - name: Set up JDK 21
-        uses: actions/setup-java@v5
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 21
+          java-version: 17
 
-      # ubuntu-latest 镜像已预装 Android SDK（含本项目所需的 API 36 平台 / build-tools），
-      # 无需再单独安装，省掉一次网络下载。
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Remove daemon JVM vendor pin (CI has no JetBrains JBR)
+      - name: Remove daemon JVM pin (CI has no JetBrains JBR)
         run: rm -f gradle/gradle-daemon-jvm.properties
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
 
       - name: Build OSS debug APK
         run: ./gradlew :app:assembleOssDebug -POAUTH_CLIENT_ID=${{ secrets.OAUTH_CLIENT_ID }}
