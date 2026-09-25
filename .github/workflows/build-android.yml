@@ -10,16 +10,19 @@ jobs:
       run:
         working-directory: apps/android
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 17
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          # 显式安装 README 要求的组件，避免 Gradle 首次构建时再下载
+          packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
