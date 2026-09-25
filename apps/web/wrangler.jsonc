@@ -51,7 +51,7 @@
 	"r2_buckets": [
 		{
 			"binding": "NEXT_INC_CACHE_R2_BUCKET",
-			"bucket_name": "my-orange-cloud-cache"
+			"bucket_name": "orange-cloud-web-cache"
 		}
 	],
 	"services": [
