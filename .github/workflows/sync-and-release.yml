@@ -13,13 +13,18 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: sync-and-release
+  cancel-in-progress: false
+
 jobs:
   sync:
     runs-on: ubuntu-latest
     outputs:
       has_changes: ${{ steps.merge.outputs.has_changes }}
+      has_conflict: ${{ steps.merge.outputs.has_conflict }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -32,8 +37,15 @@ jobs:
           git remote add upstream https://github.com/chen2he/orange-cloud.git
           git fetch upstream
           BEFORE=$(git rev-parse HEAD)
-          git merge upstream/main --no-edit
+          if ! git merge upstream/main --no-edit; then
+            git merge --abort
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "has_conflict=true" >> "$GITHUB_OUTPUT"
+            echo "::error::合并 upstream/main 时出现冲突，已自动放弃合并（git merge --abort）。需要手动解决后再推送。"
+            exit 0
+          fi
           AFTER=$(git rev-parse HEAD)
+          echo "has_conflict=false" >> "$GITHUB_OUTPUT"
           if [ "$BEFORE" != "$AFTER" ]; then
             git push origin HEAD:main
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
@@ -49,24 +61,26 @@ jobs:
       run:
         working-directory: apps/android
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: main
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      # 项目 gradle-daemon-jvm.properties 固定要求 JDK 21（JBR 发行版）。
+      # CI 用 temurin 21 即可满足 Gradle daemon 的版本校验，无需再删该文件。
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      # ubuntu-latest 镜像已预装 Android SDK（含本项目所需的 API 36 平台 / build-tools），
+      # 无需再单独安装。
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Remove daemon JVM pin (CI has no JetBrains JBR)
-        run: rm -f gradle/gradle-daemon-jvm.properties
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Decode keystore
         run: |
@@ -109,3 +123,14 @@ jobs:
             自动同步自 chen2he/orange-cloud 上游更新，OSS 风味 release 签名构建。
             版本: ${{ steps.version.outputs.name }}
             Commit: ${{ github.sha }}
+
+  notify-conflict:
+    needs: sync
+    if: needs.sync.outputs.has_conflict == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Summarize conflict
+        run: |
+          echo "### ⚠️ 与上游合并出现冲突" >> "$GITHUB_STEP_SUMMARY"
+          echo "本次定时同步未能自动合并 upstream/main，已放弃合并，fork 的 main 分支未被改动。" >> "$GITHUB_STEP_SUMMARY"
+          echo "需要手动 clone 仓库、fetch upstream、执行 \`git merge upstream/main\` 解决冲突后推送。" >> "$GITHUB_STEP_SUMMARY"
